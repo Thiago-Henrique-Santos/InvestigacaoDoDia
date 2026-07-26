@@ -169,11 +169,6 @@ const renderClueCardScreen = (root, team, progress, completedStage) => {
         <div class="stage-badge">Etapa ${completedStage} validada</div>
         <h2 class="screen-title">${clue.title}</h2>
         <p class="screen-copy">${clue.text}</p>
-        <div class="separator"></div>
-        <div class="card">
-          <h3 class="screen-title">Próxima localização</h3>
-          <p class="screen-copy">${clue.nextLocation}</p>
-        </div>
         <div class="button-row">
           <button id="continue-game">Continuar</button>
         </div>

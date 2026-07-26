@@ -17,7 +17,7 @@
   {
     id: 3,
     title: 'Fogão enferrujado',
-    text: 'Quando X9 queria se encontrar em Woodward, ele circulava a página 20 do jornal matinal de Woodland e usava ponteiros do relógio no final da página para indicar o horário do encontro.',
+    text: 'Quando X9 queria se encontrar com Woodward, ele circulava a página 20 do jornal matinal de Woodward e usava ponteiros do relógio no final da página para indicar o horário do encontro.',
     nextLocation: 'O que entra nem sempre sai igual. O tempo ajuda, mas sozinha nunca basta. Descubra onde a mudança acontece mesmo que nem todos percebam.',
     codePhysical: '141'
   },
@@ -60,7 +60,7 @@
     id: 9,
     title: 'Cama coberta de teias de aranha',
     text: 'PISTA DA IDENTIDADE (5 partes) | IV. X9, na realidade, era mais de uma pessoa.',
-    nextLocation: 'Quanto manos você percebe minha presença, mais tempo costuma passar comigo. Estou disponível 24 horas por dia, mas costumo ser usada em nem metade desse tempo.',
+    nextLocation: 'Quanto menos você percebe minha presença, mais tempo costuma passar comigo. Estou disponível 24 horas por dia, mas costumo ser usada em nem metade desse tempo.',
     codePhysical: '161'
   },
   {

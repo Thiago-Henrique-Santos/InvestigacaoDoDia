@@ -287,10 +287,6 @@
           <h2 class="screen-title">${clue.title}</h2>
           <p class="screen-copy">${clue.text}</p>
           <div class="separator"></div>
-          <div class="card">
-            <h3 class="screen-title">Próxima localização</h3>
-            <p class="screen-copy">${clue.nextLocation}</p>
-          </div>
           <div class="button-row">
             <button id="continue-game">Continuar</button>
             <button class="secondary" id="open-case">Caso</button>
@@ -325,7 +321,7 @@
           <p class="screen-copy">Encontre fisicamente a senha final escondida no local indicado para concluir a investigação.</p>
           <div class="card">
             <h3 class="screen-title">Localização da senha final</h3>
-            <p class="screen-copy">Na gaveta da secretaria, sob a pasta azul.</p>
+            <p class="screen-copy">${team.finalPassClue}</p>
           </div>
           <div class="separator"></div>
           <form id="resolution-form" class="input-group">
