@@ -1,5 +1,5 @@
 import { getClueById } from '../data/clues.js';
-import { authenticateByPassword, logoutTeam } from '../services/auth.js';
+import { getTeams } from '../data/teams.js';
 import { validateEntry, validateFinalPassword } from '../services/validator.js';
 import { loadProgress, updateProgress, clearProgress } from '../services/progress.js';
 import { showMessage } from './messages.js';
@@ -7,6 +7,18 @@ import { openModal, closeModal } from './modal.js';
 import { formatStageLabel } from '../utils/helpers.js';
 
 const appRoot = document.getElementById('app');
+
+const authenticateByPassword = (password) => {
+  const normalizedPassword = password.trim();
+  const team = getTeams().find((entry) => entry.password === normalizedPassword);
+
+  if (!team) {
+    return null;
+  }
+
+  updateProgress({ teamId: team.id, currentStage: 1, passwordValidated: true, responseSent: false });
+  return team;
+};
 
 const renderAuthScreen = (root, options = {}) => {
   const { teams = [], team, isReturning = false, progress = null } = options;
@@ -84,7 +96,6 @@ const renderMainScreen = (root, team, progress) => {
   });
 
   document.getElementById('logout').addEventListener('click', () => {
-    logoutTeam();
     clearProgress();
     renderAuthScreen(root, { teams: [] });
   });

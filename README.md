@@ -10,6 +10,8 @@ Projeto web estático para uma dinâmica presencial de investigação.
 4. Selecione a branch principal e a pasta `/root`.
 5. Salve.
 
+Esta versão foi refatorada para funcionar como uma SPA estática, sem dependência de Node, Python ou GitHub Actions.
+
 ## Funcionalidades
 
 - Autenticação por senha
