@@ -31,3 +31,7 @@ test('as senhas permanecem centralizadas em teams.js', () => {
   assert.match(teamsJs, /password: 'narval'/);
   assert.doesNotMatch(teamsJs, /marrom-2026|cinza-2026/);
 });
+
+test('a validação do código da pista normaliza o valor antes de comparar', () => {
+  assert.match(appJs, /normalizeCodeValue|inputmode="numeric"|validate-code" type="text"/);
+});
