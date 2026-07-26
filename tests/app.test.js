@@ -43,3 +43,13 @@ test('o caso é carregado de um arquivo próprio e exibido na modal', () => {
   assert.match(appJs, /window\.InvestigacaoGetCase|openCaseModal/);
   assert.match(caseJs, /title:|story:|base/);
 });
+
+test('a área de resolução segue o fluxo de três telas solicitado', () => {
+  assert.match(appJs, /PARABÉNS! Vocês provaram que são ótimos investigadores/i);
+  assert.match(appJs, /MOMENTO DE DECISÃO! Você possui apenas 1 chance/i);
+  assert.match(appJs, /Sejam rápidos! COMEMOREM em alta voz/i);
+});
+
+test('o botão de voltar da área de resolução reinicia o jogo', () => {
+  assert.match(appJs, /clearProgress\(\);\s*renderAuthScreen\(root, \{ teams: getTeams\(\) \}\);/);
+});

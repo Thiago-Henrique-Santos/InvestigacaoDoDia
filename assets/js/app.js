@@ -304,35 +304,55 @@
     });
   };
 
-  const renderSolutionScreen = (root, team, progress) => {
-    const currentStage = progress?.currentStage || 1;
-    const clue = getClueById(team.order[currentStage - 1]);
-
-    if (clue) {
-      renderMainScreen(root, team, progress);
-      return;
-    }
-
+  const renderResolutionDiscoveryScreen = (root, team, progress) => {
     root.innerHTML = `
       <section class="solution-screen">
         <div class="panel">
           <p class="eyebrow">Final</p>
-          <h2 class="screen-title">A última pista foi concluída</h2>
-          <p class="screen-copy">Encontre fisicamente a senha final escondida no local indicado para concluir a investigação.</p>
+          <h2 class="screen-title">Descubra a senha</h2>
+          <p class="screen-copy">PARABÉNS! Vocês provaram que são ótimos investigadores! Mas um bom detetive, vai além de investigar... Ele concluí, de forma bem-sucedida, o que aconteceu no caso. Você devem passar por mais um desafio de investigação, um enigma maior, e então provar sua competência como GRANDES DETETIVES.</p>
           <div class="card">
             <h3 class="screen-title">Localização da senha final</h3>
             <p class="screen-copy">${team.finalPassClue}</p>
           </div>
-          <div class="separator"></div>
+          <div class="button-row">
+            <button id="go-to-resolution">Continuar</button>
+            <button class="secondary" type="button" id="open-case">Caso</button>
+            <button class="secondary" type="button" id="back-home">Voltar</button>
+          </div>
+        </div>
+      </section>
+    `;
+
+    document.getElementById('go-to-resolution').addEventListener('click', () => {
+      updateProgress({ resolutionStep: 'form' });
+      renderResolutionFormScreen(root, team, loadProgress());
+    });
+
+    document.getElementById('open-case').addEventListener('click', () => {
+      openCaseModal();
+    });
+
+    document.getElementById('back-home').addEventListener('click', () => {
+      renderMainScreen(root, team, loadProgress());
+    });
+  };
+
+  const renderResolutionFormScreen = (root, team, progress) => {
+    root.innerHTML = `
+      <section class="solution-screen">
+        <div class="panel">
+          <p class="eyebrow">Final</p>
+          <h2 class="screen-title">Inserir resolução</h2>
+          <p class="screen-copy">MOMENTO DE DECISÃO! Você possui apenas 1 chance. Se acertar, todos irão ver sua vitória. Se errar, todos irão ver sua derrota. Pensem bem e escrevam a resolução do caso.</p>
           <form id="resolution-form" class="input-group">
-            <label for="final-password">Senha final</label>
+            <label for="final-password">Senha para gerar o card de resolução da sua equipe (resposta do último enigma)</label>
             <input id="final-password" type="password" placeholder="Digite a senha final" />
             <label for="resolution-text">Sua resolução</label>
-            <textarea id="resolution-text" rows="6" placeholder="Descreva quem foi o assassino, como ocorreu e qual foi a motivação."></textarea>
+            <textarea id="resolution-text" rows="6" placeholder="Você é capaz de examinar as pistas e responder às seguintes perguntas?\n\na) descobrir a identidade de X9\nb) o motivo de X9;\nc) o segredo especial de Woodward\n\nSe for, escreva a solução do caso aqui."></textarea>
             <div class="button-row">
               <button type="submit">Enviar resolução</button>
               <button class="secondary" type="button" id="open-case">Caso</button>
-              <button class="secondary" type="button" id="back-home">Voltar</button>
             </div>
           </form>
         </div>
@@ -349,17 +369,69 @@
         return;
       }
 
-      updateProgress({ responseSent: true, finalPasswordValidated: true, resolution: response });
+      updateProgress({ responseSent: true, finalPasswordValidated: true, resolutionStep: 'card', resolution: response });
       showMessage('Resposta registrada com sucesso.', 'success');
+      renderResolutionCardScreen(root, team, loadProgress(), response);
     });
 
     document.getElementById('open-case').addEventListener('click', () => {
       openCaseModal();
     });
+  };
+
+  const renderResolutionCardScreen = (root, team, progress, resolution) => {
+    const caseTitle = caseData?.title || 'O caso';
+    const resolutionText = resolution || progress?.resolution || 'Não informado.';
+
+    root.innerHTML = `
+      <section class="solution-screen">
+        <div class="panel">
+          <p class="screen-copy">Sejam rápidos! COMEMOREM em alta voz que concluíram a resolução e chamem todos para ouvir sua resposta. Mostrem o cartão resolução aos guias. Se acertarem, todos estarão olhando para os GRANDES VENCEDORES, OS GRANDES DETETIVES DESSE CASO! Mas... se errarem, todos verá sua HUMILHAÇÃO, os detetives fracassados! Não tem mais volta!</p>
+          <div class="card">
+            <h3 class="screen-title">${caseTitle}</h3>
+            <p class="screen-copy"><strong>Equipe:</strong> ${team.name}</p>
+            <p class="screen-copy"><strong>Resolução:</strong> ${resolutionText}</p>
+          </div>
+          <div class="button-row">
+            <button id="back-home">Voltar ao início</button>
+            <button class="secondary" type="button" id="open-case">Caso</button>
+          </div>
+        </div>
+      </section>
+    `;
 
     document.getElementById('back-home').addEventListener('click', () => {
-      renderMainScreen(root, team, loadProgress());
+      logoutTeam(); 
+      clearProgress(); 
+      // Retorna para a tela de login carregando as equipes novamente
+      renderAuthScreen(root, { teams: getTeams() }); 
     });
+
+    document.getElementById('open-case').addEventListener('click', () => {
+      openCaseModal();
+    });
+  };
+
+  const renderSolutionScreen = (root, team, progress) => {
+    const currentStage = progress?.currentStage || 1;
+    const clue = getClueById(team.order[currentStage - 1]);
+
+    if (clue) {
+      renderMainScreen(root, team, progress);
+      return;
+    }
+
+    if (progress?.responseSent || progress?.finalPasswordValidated || progress?.resolutionStep === 'card') {
+      renderResolutionCardScreen(root, team, progress, progress?.resolution || '');
+      return;
+    }
+
+    if (progress?.resolutionStep === 'form') {
+      renderResolutionFormScreen(root, team, progress);
+      return;
+    }
+
+    renderResolutionDiscoveryScreen(root, team, progress);
   };
 
   const initAuthScreen = (root, options = {}) => {
