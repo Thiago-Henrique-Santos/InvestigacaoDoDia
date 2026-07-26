@@ -7,6 +7,7 @@
   const teams = window.InvestigacaoGetTeams ? window.InvestigacaoGetTeams() : [];
 
   const clues = window.InvestigacaoClues || [];
+  const caseData = window.InvestigacaoGetCase ? window.InvestigacaoGetCase() : null;
 
   const getClueById = (id) => (window.InvestigacaoGetClueById ? window.InvestigacaoGetClueById(id) : null);
   const getTeamById = (teamId) => (window.InvestigacaoGetTeamById ? window.InvestigacaoGetTeamById(teamId) : null);
@@ -88,6 +89,26 @@
     modalRoot.innerHTML = '';
   };
 
+  const openCaseModal = () => {
+    const currentCase = caseData || window.InvestigacaoCase || null;
+    const storyText = (currentCase?.story || 'Nenhuma informação disponível sobre o caso.').replace(/\\n/g, '<br />');
+
+    openModal(`
+      <div class="input-group case-modal-content">
+        <h3 class="screen-title">${currentCase?.title || 'O caso'}</h3>
+        <p class="screen-copy">${storyText}</p>
+        <div class="button-row">
+          <button class="secondary" id="close-modal">Fechar</button>
+        </div>
+      </div>
+    `);
+
+    const closeButton = document.getElementById('close-modal');
+    if (closeButton) {
+      closeButton.addEventListener('click', closeModal);
+    }
+  };
+
   const authenticateByPassword = (password) => {
     const normalizedPassword = password.trim();
     const team = teams.find((entry) => entry.password === normalizedPassword);
@@ -117,6 +138,7 @@
             <input id="team-password" name="password" type="password" placeholder="Digite a senha" required />
             <div class="button-row">
               <button type="submit">Entrar</button>
+              <button class="secondary" type="button" id="open-case">Caso</button>
             </div>
           </form>
           ${team ? `<div class="card" style="margin-top: 1rem;"><h3 class="screen-title">Equipe ativa</h3><p class="screen-copy">${team.name}</p></div>` : ''}
@@ -138,6 +160,11 @@
 
       renderMainScreen(root, authenticatedTeam, loadProgress());
     });
+
+    const caseButton = document.getElementById('open-case');
+    if (caseButton) {
+      caseButton.addEventListener('click', () => openCaseModal());
+    }
   };
 
   const renderMainScreen = (root, team, progress) => {
@@ -168,6 +195,7 @@
           </div>
           <div class="button-row">
             <button id="found-clue">Achei a pista</button>
+            <button class="secondary" id="open-case">Caso</button>
             <button class="secondary" id="logout">Sair</button>
           </div>
         </div>
@@ -176,6 +204,10 @@
 
     document.getElementById('found-clue').addEventListener('click', () => {
       openValidationModal(team, progress);
+    });
+
+    document.getElementById('open-case').addEventListener('click', () => {
+      openCaseModal();
     });
 
     document.getElementById('logout').addEventListener('click', () => {
@@ -261,6 +293,7 @@
           </div>
           <div class="button-row">
             <button id="continue-game">Continuar</button>
+            <button class="secondary" id="open-case">Caso</button>
           </div>
         </div>
       </section>
@@ -268,6 +301,10 @@
 
     document.getElementById('continue-game').addEventListener('click', () => {
       renderMainScreen(root, team, loadProgress());
+    });
+
+    document.getElementById('open-case').addEventListener('click', () => {
+      openCaseModal();
     });
   };
 
@@ -298,6 +335,7 @@
             <textarea id="resolution-text" rows="6" placeholder="Descreva quem foi o assassino, como ocorreu e qual foi a motivação."></textarea>
             <div class="button-row">
               <button type="submit">Enviar resolução</button>
+              <button class="secondary" type="button" id="open-case">Caso</button>
               <button class="secondary" type="button" id="back-home">Voltar</button>
             </div>
           </form>
@@ -317,6 +355,10 @@
 
       updateProgress({ responseSent: true, finalPasswordValidated: true, resolution: response });
       showMessage('Resposta registrada com sucesso.', 'success');
+    });
+
+    document.getElementById('open-case').addEventListener('click', () => {
+      openCaseModal();
     });
 
     document.getElementById('back-home').addEventListener('click', () => {
