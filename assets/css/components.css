@@ -1,0 +1,123 @@
+.panel {
+  width: min(100%, 44rem);
+  padding: 1.4rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border-color);
+  background: var(--panel-color);
+  box-shadow: var(--shadow);
+}
+
+.card {
+  background: linear-gradient(135deg, var(--panel-strong), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(193, 154, 75, 0.18);
+  border-radius: 1rem;
+  padding: 1.2rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+label {
+  color: var(--muted-color);
+  font-size: 0.95rem;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 0.8rem;
+  padding: 0.9rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-color);
+  outline: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent-color);
+}
+
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 1.2rem;
+  background: linear-gradient(135deg, var(--accent-color), #d9b76d);
+  color: #111;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(193, 154, 75, 0.2);
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.message {
+  margin-top: 1rem;
+  padding: 0.95rem 1rem;
+  border-radius: 0.9rem;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.message.info {
+  background: rgba(193, 154, 75, 0.12);
+  color: #f7e5bf;
+}
+
+.message.success {
+  background: rgba(107, 145, 84, 0.16);
+  color: #d7f0ca;
+}
+
+.message.error {
+  background: rgba(184, 95, 95, 0.16);
+  color: #ffcfcd;
+}
+
+.message.warning {
+  background: rgba(166, 127, 45, 0.18);
+  color: #ffe1ab;
+}
+
+.modal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.modal-root:has(.modal-backdrop) {
+  pointer-events: auto;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.modal-card {
+  width: min(100%, 32rem);
+  background: var(--panel-color);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1.3rem;
+  box-shadow: var(--shadow);
+}

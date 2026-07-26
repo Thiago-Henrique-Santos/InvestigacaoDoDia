@@ -1,0 +1,14 @@
+:root {
+  --bg-color: #060606;
+  --panel-color: #121212;
+  --panel-strong: #1c1c1c;
+  --border-color: #2a2a2a;
+  --text-color: #f2f0ea;
+  --muted-color: #9f9b92;
+  --accent-color: #c19a4b;
+  --accent-soft: #6f5624;
+  --error-color: #b85f5f;
+  --success-color: #6b9154;
+  --warning-color: #a67f2d;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
